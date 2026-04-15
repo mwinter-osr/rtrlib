@@ -24,7 +24,7 @@
 #include <unistd.h>
 
 static void rtr_purge_outdated_records(struct rtr_socket *rtr_socket);
-static void *rtr_fsm_start(struct rtr_socket *rtr_socket);
+static void *rtr_fsm_start(void *arg);
 
 static const char *socket_str_states[] = {[RTR_CONNECTING] = "RTR_CONNECTING",
 					  [RTR_ESTABLISHED] = "RTR_ESTABLISHED",
@@ -79,7 +79,7 @@ int rtr_start(struct rtr_socket *rtr_socket)
 	if (rtr_socket->thread_id)
 		return RTR_ERROR;
 
-	int rtval = pthread_create(&(rtr_socket->thread_id), NULL, (void *(*)(void *)) &rtr_fsm_start, rtr_socket);
+	int rtval = pthread_create(&(rtr_socket->thread_id), NULL, &rtr_fsm_start, rtr_socket);
 
 	if (rtval == 0)
 		return RTR_SUCCESS;
@@ -108,8 +108,10 @@ void rtr_purge_outdated_records(struct rtr_socket *rtr_socket)
 }
 
 /* WARNING: This Function has cancelable sections*/
-void *rtr_fsm_start(struct rtr_socket *rtr_socket)
+void *rtr_fsm_start(void *arg)
 {
+	struct rtr_socket *rtr_socket = arg;
+
 	if (rtr_socket->state == RTR_SHUTDOWN)
 		return NULL;
 
