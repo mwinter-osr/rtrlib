@@ -312,7 +312,7 @@ RTRLIB_EXPORT enum rtr_rtvals rtr_mgr_init(struct rtr_mgr_config **config_out, s
 		return RTR_ERROR;
 	}
 
-	*config_out = config = rtr_malloc(sizeof(*config));
+	*config_out = config = rtr_calloc(1, sizeof(*config));
 	if (!config)
 		return RTR_ERROR;
 
