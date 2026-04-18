@@ -121,10 +121,10 @@ static int custom_send(const void *socket __attribute__((unused)), const void *p
 	expected_error_pdus_index++;
 
 	if (err->type == 10) {
-		uint32_t *errlen = (uint32_t *)((char *)err->rest + err->len_enc_pdu);
+		uint32_t *errlen = (uint32_t *)((char *)err->rest + BYTES32(err->len_enc_pdu));
 
 		if ((char *)errlen < (char *)err + BYTES32(err->len))
-			printf("err msg: %.*s\n", *errlen, (char *)(errlen + 1));
+			printf("err msg: %.*s\n", BYTES32(*errlen), (char *)(errlen + 1));
 	}
 	return len;
 }
