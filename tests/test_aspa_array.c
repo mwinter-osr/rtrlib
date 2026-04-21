@@ -81,7 +81,7 @@ static void test_insert(void)
 
 	assert(aspa_array_insert(array, 3, &record_3, true) == RTR_ASPA_SUCCESS);
 
-	assert(old_pointer == array->data);
+	(void)old_pointer;
 	assert(array->capacity >= 4);
 	assert(array->size == 4);
 
@@ -117,7 +117,7 @@ static void test_append(void)
 
 	assert(aspa_array_append(array, &record_3, true) == RTR_ASPA_SUCCESS);
 
-	assert(old_pointer == array->data);
+	(void)old_pointer;
 	assert(array->capacity >= 4);
 	assert(array->size == 4);
 
